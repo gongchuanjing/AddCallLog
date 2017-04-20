@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "tk.chuanjing.addcalllog"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 22     //25,暂时避免权限检查
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -10,8 +10,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tk.chuanjing.addcalllog.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="请选择通话开始时间" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="选择开始时间" />
+    </LinearLayout>
+
+    <!-- 密码:  输入框 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="@dimen/login_height"
+            android:layout_height="@dimen/login_height"
+            android:src="@drawable/pwd" />
+
+        <EditText
+            android:id="@+id/et_psw"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_height"
+            android:background="@drawable/input_bg"
+            android:hint="@string/et_login_pwd"
+            android:inputType="textPassword"
+            android:textColor="@color/my_white"
+            android:textColorHint="@color/my_white" />
+    </LinearLayout>
 </RelativeLayout>
