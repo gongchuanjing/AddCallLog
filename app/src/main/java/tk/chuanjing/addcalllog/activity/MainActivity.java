@@ -14,6 +14,7 @@ import java.util.Date;
 import tk.chuanjing.addcalllog.R;
 import tk.chuanjing.addcalllog.bean.CallLogBean;
 import tk.chuanjing.addcalllog.core.CoreUtils;
+import tk.chuanjing.addcalllog.utils.APPUtils;
 import tk.chuanjing.addcalllog.utils.DateAndTimeUtils;
 
 public class MainActivity extends BaseActivity {
@@ -56,7 +57,14 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void initData() {}
+    public void initData() {
+        String path = "https://github.com/gongchuanjing/AddCallLog/blob/master/version.json";
+        try {
+            String apkDownloadUrl = APPUtils.checkUpdate(path, getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onInnerClick(View v) {
