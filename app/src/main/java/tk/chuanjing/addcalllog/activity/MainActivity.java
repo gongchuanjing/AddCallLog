@@ -1,9 +1,11 @@
 package tk.chuanjing.addcalllog.activity;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airsaid.pickerviewlibrary.TimePickerView;
 
@@ -41,21 +43,20 @@ public class MainActivity extends BaseActivity {
         tv_type = (TextView) findViewById(R.id.tv_type);
         btn_start_time = (Button) findViewById(R.id.btn_start_time);
         btn_type = (Button) findViewById(R.id.btn_type);
-        btn_type = (Button) findViewById(R.id.btn_ok);
+        btn_ok = (Button) findViewById(R.id.btn_ok);
         et_phone = (EditText) findViewById(R.id.et_phone);
-        et_phone = (EditText) findViewById(R.id.et_duration);
+        et_duration = (EditText) findViewById(R.id.et_duration);
     }
 
     @Override
     public void initListener() {
         btn_start_time.setOnClickListener(this);
+        btn_type.setOnClickListener(this);
+        btn_ok.setOnClickListener(this);
     }
 
     @Override
-    public void initData() {
-        CallLogBean callLog = new CallLogBean(phoneNumber, name, callLogType, callLogDate, callLogDuration);
-        CoreUtils.insertCallLog(getApplicationContext(), callLog);
-    }
+    public void initData() {}
 
     @Override
     public void onInnerClick(View v) {
@@ -70,23 +71,48 @@ public class MainActivity extends BaseActivity {
                 break;
 
             case R.id.btn_ok:
+                addCallLog();
                 break;
         }
+    }
+
+    /**
+     * 添加通话记录
+     */
+    private void addCallLog() {
+        phoneNumber = et_phone.getText().toString().trim();
+        if (TextUtils.isEmpty(phoneNumber)) {
+            Toast.makeText(getApplicationContext(), "请输入电话号码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String duration = et_duration.getText().toString().trim();
+        if(TextUtils.isEmpty(duration)){
+            Toast.makeText(getApplicationContext(), "请输入通话记录时长", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            callLogDuration = Integer.parseInt(duration) * 60;
+        }
+
+        CallLogBean callLog = new CallLogBean(phoneNumber, name, callLogType, callLogDate, callLogDuration);
+        CoreUtils.insertCallLog(getApplicationContext(), callLog);
+        Toast.makeText(getApplicationContext(), "添加成功，请到通话记录中查看", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * 选择通话记录的状态 1:来电 2:去电 3:未接
      */
     private void selectStartType() {
+        Toast.makeText(getApplicationContext(), "暂不可用", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * 选择通话开始时间
      */
     private void selectStartTime() {
-        TimePickerView mTimePickerView = new TimePickerView(getApplicationContext(), TimePickerView.Type.ALL);
+        TimePickerView mTimePickerView = new TimePickerView(this, TimePickerView.Type.ALL);
         // 设置是否循环
-        // mTimePickerView.setCyclic(true);
+        mTimePickerView.setCyclic(true);
         // 设置滚轮文字大小
         // mTimePickerView.setTextSize(TimePickerView.TextSize.SMALL);
         // 设置时间可选范围(结合 setTime 方法使用,必须在)
@@ -98,7 +124,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onTimeSelect(Date date) {
                 callLogDate = date.getTime();
-                tv_start_time.setText(DateAndTimeUtils.getTimeForDate("yyyy-MM-dd hh:mm", date));
+                tv_start_time.setText(DateAndTimeUtils.getTimeForDate("yyyy-MM-dd HH:mm", date));
             }
         });
         mTimePickerView.show();
